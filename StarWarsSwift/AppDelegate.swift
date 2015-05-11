@@ -15,7 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Crear la window
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        // Creamos el VC a mostrar
+        var vc = StarWarsCharacterViewController(nibName: "StarWarsCharacterViewController", bundle: nil)
+        
+        // Lo asignamos como root
+        window?.rootViewController = vc
+        
+        // Lo mostramos
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
