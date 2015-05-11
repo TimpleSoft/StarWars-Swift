@@ -10,10 +10,26 @@ import UIKit
 
 class StarWarsCharacterViewController: UIViewController {
 
+    @IBOutlet weak var photo: UIImageView!
+    @IBAction func playSound(sender: AnyObject) {
+    }
+    @IBAction func showWiki(sender: AnyObject) {
+    }
+    
+    var model : StarWarsCharacter?
+    
+    
+    convenience init(model: StarWarsCharacter?, nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        
+        self.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.model = model
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.photo.image = model?.image
     }
 
     override func didReceiveMemoryWarning() {
