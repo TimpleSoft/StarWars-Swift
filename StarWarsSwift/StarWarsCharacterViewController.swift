@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StarWarsCharacterViewController: UIViewController {
+class StarWarsCharacterViewController: UIViewController, UISplitViewControllerDelegate, UniverseTableViewControllerDelegate {
     
     
     var model : StarWarsCharacter?
@@ -59,4 +59,47 @@ class StarWarsCharacterViewController: UIViewController {
         self.photo.image = self.model?.image
     }
 
+    
+    
+    // MARK: UISplitViewControllerDelegate
+    func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
+        
+        // Averiguamos si la tabla se ve
+        if (displayMode == UISplitViewControllerDisplayMode.PrimaryHidden){
+            
+            // tabla oculta, ponemos el botón en la barra de navegación
+            self.navigationItem.leftBarButtonItem = svc.displayModeButtonItem()
+            
+        }else{
+            
+            // tabla mostrada, oculto el boton
+            self.navigationItem.leftBarButtonItem = nil
+            
+        }
+        
+    }
+    
+    
+    // MARK: UniverseTableViewControllerDelegate
+    func starWarsViewController(swvc: UniverseTableViewController, didSelectCharacter character: StarWarsCharacter){
+        
+        // Actualizamos el modelo
+        self.model = character
+        self.syncViewWithModel()
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

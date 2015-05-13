@@ -8,9 +8,18 @@
 
 import UIKit
 
+// Protocolo delegado de UniverseTableViewController
+protocol UniverseTableViewControllerDelegate{
+    
+    func starWarsViewController(swvc: UniverseTableViewController, didSelectCharacter: StarWarsCharacter)
+    
+}
+
+
 class UniverseTableViewController: UITableViewController {
     
     let model = StarWarsUniverse()
+    weak var delegate : StarWarsCharacterViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,9 +87,16 @@ class UniverseTableViewController: UITableViewController {
             character = model.rebelAtIndex(indexPath.row)
         }
         
-        let charVC = StarWarsCharacterViewController(model: character, nibName: "StarWarsCharacterViewController", bundle: nil)
-        self.navigationController?.pushViewController(charVC, animated: true)
+        // si tenemos delegado se lo enviamos a el, si no lo cargamos en el nuestro
+        if let delegate = self.delegate{
+            delegate.starWarsViewController(self, didSelectCharacter: character)
+        }
+        else{
+            let charVC = StarWarsCharacterViewController(model: character, nibName: "StarWarsCharacterViewController", bundle: nil)
+            self.navigationController?.pushViewController(charVC, animated: true)
+        }
         
     }
     
 }
+

@@ -22,15 +22,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Creamos una instacia del universo
         let universe = StarWarsUniverse()
         
-        // Creamos el VC a mostrar
-        //var vc = StarWarsCharacterViewController(model: universe.imperialAtIndex(2), nibName: "StarWarsCharacterViewController", bundle: nil)
+        // Creamos los VC a mostrar
+        var charVC = StarWarsCharacterViewController(model: universe.imperialAtIndex(2), nibName: "StarWarsCharacterViewController", bundle: nil)
         var universeVC = UniverseTableViewController(style: UITableViewStyle.Grouped)
         
         // Creamos el navigation
-        var navVC = UINavigationController(rootViewController: universeVC)
+        var charNav = UINavigationController(rootViewController: charVC)
+        var universeNav = UINavigationController(rootViewController: universeVC)
+        
+        // Creamos el combinador
+        let splitVC = UISplitViewController()
+        splitVC.viewControllers = [universeNav, charNav]
+        
+        // Asignamos los delegados
+        splitVC.delegate = charVC
+        universeVC.delegate = charVC
         
         // Lo asignamos como root
-        window?.rootViewController = navVC
+        window?.rootViewController = splitVC
             
         // Lo mostramos
         window?.makeKeyAndVisible()
