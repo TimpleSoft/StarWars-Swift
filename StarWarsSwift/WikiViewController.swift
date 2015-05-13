@@ -41,11 +41,18 @@ class WikiViewController: UIViewController, UIWebViewDelegate {
         self.browser.delegate = self
         self.syncWithModel()
         
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self,
+            selector: "notifyThatCharacterDidChange:",
+            name: UniverseTableViewController.CHARACTER_DID_CHANGE_NOTIFICATION,
+            object: nil)
+        
     }
     
     func syncWithModel(){
         
         self.canLoad = true
+        self.activity.hidden = false
         self.activity.startAnimating()
         
         if let url = self.model?.url {
@@ -71,9 +78,20 @@ class WikiViewController: UIViewController, UIWebViewDelegate {
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         
         self.activity.hidden = true
-        println(error.description)
+        let alertView = UIAlertView(title: "Error cargando la URL", message: error.description, delegate: self, cancelButtonTitle: "Aceptar")
+        alertView.show()
         
     }
     
+    
+    // MARK: Notificaciones
+    @objc func notifyThatCharacterDidChange(notification: NSNotification){
+        
+        // Cambiamos el modelo
+        var character = notification.userInfo?[UniverseTableViewController.CHARACTER_KEY] as! StarWarsCharacter
+        self.model = character
+        self.syncWithModel()
+        
+    }
 
 }

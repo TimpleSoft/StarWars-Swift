@@ -12,9 +12,24 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    static let LAST_SELECTED_CHARACTER_SECTION = "lastSelectedCharacterSection"
+    static let LAST_SELECTED_CHARACTER_ROW = "lastSelectedCharacterRow"
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        // Cargamos las coordenadas el último personaje seleccionado si éxiste, si no ponemos uno por defecto
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if (userDefaults.objectForKey(AppDelegate.LAST_SELECTED_CHARACTER_SECTION) == nil){
+            userDefaults.setObject(0, forKey: AppDelegate.LAST_SELECTED_CHARACTER_SECTION)
+            userDefaults.setObject(0, forKey: AppDelegate.LAST_SELECTED_CHARACTER_ROW)
+            userDefaults.synchronize()
+        }
+        
+        let section = userDefaults.objectForKey(AppDelegate.LAST_SELECTED_CHARACTER_SECTION) as! Int
+        let row = userDefaults.objectForKey(AppDelegate.LAST_SELECTED_CHARACTER_ROW) as! Int
+        
         
         // Crear la window
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -23,7 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let universe = StarWarsUniverse()
         
         // Creamos los VC a mostrar
-        var charVC = StarWarsCharacterViewController(model: universe.imperialAtIndex(2), nibName: "StarWarsCharacterViewController", bundle: nil)
+        var charVC : StarWarsCharacterViewController
+        if section == StarWarsUniverse.IMPERIAL_SECTION{
+            charVC = StarWarsCharacterViewController(model: universe.imperialAtIndex(row), nibName: "StarWarsCharacterViewController", bundle: nil)
+        }else{
+            charVC = StarWarsCharacterViewController(model: universe.rebelAtIndex(row), nibName: "StarWarsCharacterViewController", bundle: nil)
+        }
         var universeVC = UniverseTableViewController(style: UITableViewStyle.Grouped)
         
         // Creamos el navigation

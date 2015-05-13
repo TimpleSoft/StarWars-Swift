@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-// CLASE STAR WARS CHARACTER
+// MARK: CLASE STAR WARS CHARACTER
 class StarWarsCharacter{
     
     var name : String = ""
@@ -36,13 +36,15 @@ class StarWarsCharacter{
 }
 
 
+
+// MARK: CLASE STAR WARS UNIVERSE
 class StarWarsUniverse{
     
     var rebels : Array<StarWarsCharacter> = []
     var imperials : Array<StarWarsCharacter> = []
     
-    let IMPERIAL_SECTION = 0
-    let REBEL_SECTION = 1
+    static let IMPERIAL_SECTION = 0
+    static let REBEL_SECTION = 1
     
     init(){
         // Creamos manualmente los personajes

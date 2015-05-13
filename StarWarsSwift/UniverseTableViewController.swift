@@ -18,6 +18,10 @@ protocol UniverseTableViewControllerDelegate{
 
 class UniverseTableViewController: UITableViewController {
     
+    static let CHARACTER_KEY = "characterKey"
+    static let CHARACTER_DID_CHANGE_NOTIFICATION = "characterDidChange"
+    
+    
     let model = StarWarsUniverse()
     weak var delegate : StarWarsCharacterViewController?
     
@@ -35,7 +39,7 @@ class UniverseTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
-        if section == model.IMPERIAL_SECTION{
+        if section == StarWarsUniverse.IMPERIAL_SECTION{
             return model.imperialsCount()
         }
         else{
@@ -47,7 +51,7 @@ class UniverseTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let character : StarWarsCharacter
-        if (indexPath.section == model.IMPERIAL_SECTION){
+        if (indexPath.section == StarWarsUniverse.IMPERIAL_SECTION){
             character = model.imperialAtIndex(indexPath.row)
         }else{
             character = model.rebelAtIndex(indexPath.row)
@@ -69,7 +73,7 @@ class UniverseTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (section == model.IMPERIAL_SECTION){
+        if (section == StarWarsUniverse.IMPERIAL_SECTION){
             return "Imperials"
         }else{
             return "Rebels"
@@ -81,7 +85,7 @@ class UniverseTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let character : StarWarsCharacter
-        if (indexPath.section == model.IMPERIAL_SECTION){
+        if (indexPath.section == StarWarsUniverse.IMPERIAL_SECTION){
             character = model.imperialAtIndex(indexPath.row)
         }else{
             character = model.rebelAtIndex(indexPath.row)
@@ -95,6 +99,19 @@ class UniverseTableViewController: UITableViewController {
             let charVC = StarWarsCharacterViewController(model: character, nibName: "StarWarsCharacterViewController", bundle: nil)
             self.navigationController?.pushViewController(charVC, animated: true)
         }
+        
+        // mandamos notificacion
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let dict = [UniverseTableViewController.CHARACTER_KEY: character]
+        notificationCenter.postNotification(NSNotification(name: UniverseTableViewController.CHARACTER_DID_CHANGE_NOTIFICATION,
+            object: self,
+            userInfo: dict))
+        
+        // guardamos las coordenadas para arrancar la app con este personaje
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(indexPath.section, forKey: AppDelegate.LAST_SELECTED_CHARACTER_SECTION)
+        userDefaults.setObject(indexPath.row, forKey: AppDelegate.LAST_SELECTED_CHARACTER_ROW)
+        userDefaults.synchronize()
         
     }
     
