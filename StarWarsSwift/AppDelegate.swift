@@ -19,25 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Crear la window
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
+        // Creamos una instacia del universo
+        let universe = StarWarsUniverse()
+        
         // Creamos el VC a mostrar
-        if let soundURL = NSBundle.mainBundle().URLForResource("yoda", withExtension: "caf"){
-            let characterSound = NSData(contentsOfURL:soundURL)
+        var vc = StarWarsCharacterViewController(model: universe.rebels[1], nibName: "StarWarsCharacterViewController", bundle: nil)
             
+        // Lo asignamos como root
+        window?.rootViewController = vc
             
-            var character = StarWarsCharacter(name:"Vader",
-                alias:"Darth",
-                image:UIImage(named: "darthVader.jpg")!,
-                sound:characterSound!,
-                url:NSURL(string: "http://en.wikipedia.org/wiki/Darth_Vader")!)
-            
-            var vc = StarWarsCharacterViewController(model: character, nibName: "StarWarsCharacterViewController", bundle: nil)
-            
-            // Lo asignamos como root
-            window?.rootViewController = vc
-            
-            // Lo mostramos
-            window?.makeKeyAndVisible()
-        }
+        // Lo mostramos
+        window?.makeKeyAndVisible()
         
         
         return true
