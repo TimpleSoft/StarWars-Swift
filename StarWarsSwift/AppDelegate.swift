@@ -23,10 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let universe = StarWarsUniverse()
         
         // Creamos el VC a mostrar
-        var vc = StarWarsCharacterViewController(model: universe.rebels[1], nibName: "StarWarsCharacterViewController", bundle: nil)
-            
+        //var vc = StarWarsCharacterViewController(model: universe.imperialAtIndex(2), nibName: "StarWarsCharacterViewController", bundle: nil)
+        var universeVC = UniverseTableViewController(style: UITableViewStyle.Grouped)
+        
+        // Creamos el navigation
+        var navVC = UINavigationController(rootViewController: universeVC)
+        
         // Lo asignamos como root
-        window?.rootViewController = vc
+        window?.rootViewController = navVC
             
         // Lo mostramos
         window?.makeKeyAndVisible()

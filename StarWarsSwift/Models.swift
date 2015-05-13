@@ -36,11 +36,13 @@ class StarWarsCharacter{
 }
 
 
-
 class StarWarsUniverse{
     
     var rebels : Array<StarWarsCharacter> = []
     var imperials : Array<StarWarsCharacter> = []
+    
+    let IMPERIAL_SECTION = 0
+    let REBEL_SECTION = 1
     
     init(){
         // Creamos manualmente los personajes
@@ -122,6 +124,14 @@ class StarWarsUniverse{
     
     func imperialsCount() -> Int{
         return imperials.count
+    }
+    
+    func rebelAtIndex(index : Int) -> StarWarsCharacter{
+        return self.rebels[index]
+    }
+    
+    func imperialAtIndex(index : Int) -> StarWarsCharacter{
+        return self.imperials[index]
     }
     
 }

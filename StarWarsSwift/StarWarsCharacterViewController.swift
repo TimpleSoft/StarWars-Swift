@@ -9,15 +9,31 @@
 import UIKit
 
 class StarWarsCharacterViewController: UIViewController {
-
-    @IBOutlet weak var photo: UIImageView!
-    @IBAction func playSound(sender: AnyObject) {
-    }
-    @IBAction func showWiki(sender: AnyObject) {
-    }
+    
     
     var model : StarWarsCharacter?
     
+    
+    // MARK: Outlets & Actions
+
+    @IBOutlet weak var photo: UIImageView!
+    
+    
+    @IBAction func playSound(sender: AnyObject) {
+        
+        var player = CafPlayer()
+        player.playSoundData(model?.sound)
+    
+    }
+    
+    @IBAction func showWiki(sender: AnyObject) {
+        
+        var wikiVC = WikiViewController(model: self.model, nibName: "WikiViewController", bundle: nil)
+        self.navigationController?.pushViewController(wikiVC, animated: true)
+        
+    }
+    
+    // MARK: Inicializador de conveniencia
     
     convenience init(model: StarWarsCharacter?, nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         
@@ -26,10 +42,10 @@ class StarWarsCharacterViewController: UIViewController {
         
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.photo.image = model?.image
+        self.syncViewWithModel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,14 +54,9 @@ class StarWarsCharacterViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func syncViewWithModel(){
+        self.title = self.model?.alias
+        self.photo.image = self.model?.image
     }
-    */
 
 }
